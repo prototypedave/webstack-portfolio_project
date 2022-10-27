@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title%}
+  home
+{% endblock %}
+
+{% block current %}
+  Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="album py-5 bg-light">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <image class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ url_for('static', filename='images/staffIcon.jpg') }}"></image>
+          <div class="card-body">
+            <p class="card-text">View or customize employees details</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{{ url_for('employees_page') }}">View</a></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{{ url_for('employees_page') }}">Customize</a></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <image class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ url_for('static', filename='images/vendor.jpg') }}"></image>
+          <div class="card-body">
+            <p class="card-text">View restaurant details</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{{ url_for('branch_page') }}">Update details</a></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <image class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ url_for('static', filename='images/sales.jpg') }}"></image>
+          <div class="card-body">
+            <p class="card-text">Check sales and reports</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{{ url_for('report_page') }}">Today</a></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{{ url_for('report_page') }}">Last week</a></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <image class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ url_for('static', filename='images/food.png') }}"></image>
+          <div class="card-body">
+            <p class="card-text">Change product details?</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{{ url_for('product_page') }}">Change Menu Item</a></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{{ url_for('product_page') }}">Add new Item</a></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>     
+{% endblock %}

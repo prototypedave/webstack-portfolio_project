@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% block title%}
+  employee
+{% endblock %}
+
+{% block current %}
+  Employees
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="jumbotron p-3">
+        <h2>Employees Details <button type="button" class="btn btn-primary float-right"
+        data-toggle="modal" data-target="#mymodal">Add Employee</button></h2>
+
+        <div class="table-responsive">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Salary</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Role</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+          {% for employee in employees %}
+              <tr>
+                <td>{{ employee.id }}</td>
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.mobile }}</td>
+                <td>{{ employee.salary }}</td>
+                <td>{{ employee.age }}</td>
+                <td>{{ employee.gender }}</td>
+                <td>{{ employee.role }}</td> 
+                <td>
+                  <div class="btn-group">
+                  <a type="button" href="/updateEmployee/{{employee.id}}" data-toggle="modal" data-target="#modaledit{{employee.id}}" class="btn btn-sm btn-outline-primary">update</a>
+                  <form id="delete-button" action="{{url_for('delete_employee') }}" method="POST">
+                  <button type="submit" class="btn btn-sm btn-outline-danger" name='delete' value="{{ employee.id }}">Delete</button>
+                  </form>
+                  </div>
+                </td>
+              </tr>
+          
+            </tbody>
+            <!-- Modal to update employee-->
+
+            <div class="modal fade" id="modaledit{{employee.id}}" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Update Employee Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{{ url_for('update_existing_employee') }}" method="POST" id="form2">
+                      <div class="form-group">
+                        <input type="hidden" name="id" value="{{ employee.id }}">
+                        <label for="name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{employee.name}}">                      
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="mobile" class="col-form-label">Mobile:</label>
+                        <input type="text" class="form-control" id="mobile" name="mobile" value="{{employee.mobile}}">                      
+                      </div>
+                      <div class="form-group">
+                        <label for="age" class="col-form-label">Age:</label>
+                        <input type="number" class="form-control" id="age" name="age" value="{{employee.age}}">
+                      </div>
+                      <div class="form-group">
+                        <label for="gender" class="col-form-label">Gender:</label>
+                        <input type="text" class="form-control" id="gender" name="gender" value="{{employee.gender}}">                      
+                      </div>
+                      <div class="form-group">
+                        <label for="salary" class="col-form-label">Salary:</label>
+                        <input type="number" class="form-control" id="salary" name="salary" value="{{employee.salary}}">
+                      </div>
+                      <div class="form-group">
+                        <label for="role" class="col-form-label">Role:</label>
+                        <input type="text" class="form-control" id="role" name="role" value="{{employee.role}}">
+                      </div>
+                    </form>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" id="submit" onclick="form_update()">update</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+          </table>
+        </div>
+        <!--Modal to ADD employee-->
+        <div class="modal fade" id="mymodal" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Add New Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form method="POST" id="form1" action="{{ url_for('new_employee') }}">
+                  {{ form1.hidden_tag() }}
+                  <div class="form-group">
+                    <label>Name:</label>
+                    {{ form1.name(class="form-control", id='name') }}
+                  <div class="form-group">
+                    <label>Mobile:</label>
+                    {{ form1.mobile(class="form-control", id="mobile") }}
+                  </div>
+                  <div class="form-group">
+                    {{ form1.age.label() }}
+                    {{ form1.age(class="form-control", id="age") }}
+                  </div>
+                  <div class="form-group">
+                    {{ form1.gender.label() }}
+                    {{ form1.gender(class="form-control", id="gender") }}
+
+                  </div>
+                  <div class="form-group">
+                    {{ form1.salary.label() }}
+                    {{ form1.salary(class="form-control", id="salary") }}
+                  </div>
+                  <div class="form-group">
+                    {{ form1.role.label() }}
+                    {{ form1.role(class="form-control", id="role") }}
+                  </div>
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="button" class="btn btn-primary" id="submit" onclick="form_submit()" value="submit">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block script %}
+<script>
+function form_submit() {
+        document.getElementById("form1").submit();
+   }  
+function form_update() {
+        document.getElementById("form2").submit();
+   }  
+ 
+</script> 
+
+{% endblock %}

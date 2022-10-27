@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block title %}
+  Menu 
+{% endblock %}
+{% block current %}
+  Menu Items 
+{% endblock %}
+
+{% block styles%}
+<link href="{{url_for('static', filename='styles/menu.css') }}" rel="stylesheet">
+{% endblock%}
+
+{% block content %}
+
+  <section id="menu" class="menu section-bg">
+    <div class="container">
+        <div class="section-title">
+            <h3>Menu<button class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal" type="button">Add item</button></h3>
+        </div>
+        {% for row in menu %}
+        <div class="row menu-container" id="{{row.id}}">
+          <div class="col-lg-6 menu-item filter-starters">
+            <img src="{{url_for('static', filename='menu_pics/'+ row.image)}}" id="{{row.id}}" class="menu-img" alt="{{row.food_name}}" width="75" height="75">
+            <div class="menu-content">
+              <a href="#">{{row.food}}</a><span>{{row.price}}</span>
+            </div>
+            <div class="menu-ingredients">
+              {{row.ingredients}}
+            </div>
+            <div class="btn-group">
+              <a href="/menu/update/{{row.id}}" class="btn btn-primary" data-toggle="modal" data-target="#mymodaledit{{row.id}}" type="button">Edit</a>
+              <form action="{{url_for('remove_food') }}" method="POST">
+              <button class="btn btn-secondary" type="submit" name="delete" value="{{row.id}}">Remove</button>
+              </form>
+            </div>
+          </div>
+          <div class="modal fade" id="mymodaledit{{row.id}}" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="myModalLabel">Add Food to the menu</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form method="POST" id="form1" action="{{ url_for('menu_update') }}" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                      <input name="id" type="hidden" value="{{row.id}}">
+                      <label>Food Name:</label>
+                      {{ form.food(class="form-control", id='efood') }}
+                    </div>
+                    <div class="form-group">
+                      <label>Ingredients:</label>
+                      {{ form.ingredients(class="form-control", id="ingredients") }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.category.label() }}
+                      {{ form.category(class="form-control", id="ecategory") }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.price.label() }}
+                      {{ form.price(class="form-control", id="price") }}
+  
+                    </div>
+                    <div class="form-group">
+                      {{ form.image.label() }}
+                      <input type="filefield" class="form-control" name="pic" value="{{row.image}}">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="submit" onclick="form_update()">update</button>
+                      <button type="button"  class="btn btn-secondary float-right" data-dismiss="modal">Close</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+        <div class="modal fade" id="mymodal" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Add Food to the menu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form method="POST" id="form1" action="{{ url_for('add_menu') }}" enctype="multipart/form-data">
+                  {{ form.hidden_tag() }}
+                  <div class="form-group">
+                    <label>Food Name:</label>
+                    {{ form.food(class="form-control", id='food_name') }}
+                  </div>
+                  <div class="form-group">
+                    <label>Ingredients:</label>
+                    {{ form.ingredients(class="form-control", id="ingred") }}
+                  </div>
+                  <div class="form-group">
+                    {{ form.category.label() }}
+                    {{ form.category(class="form-control", id="category") }}
+                  </div>
+                  <div class="form-group">
+                    {{ form.price.label() }}
+                    {{ form.price(class="form-control", id="price") }}
+
+                  </div>
+                  <div class="form-group">
+                    {{ form.image.label() }}
+                    {{ form.image(class="form-control", id="image") }}
+                  </div>
+                    {{form.submit(class="btn btn-info")}}
+                    <button type="button"  class="btn btn-secondary float-right" data-dismiss="modal">Close</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function form_update() {
+        document.getElementById("form2").submit();
+   }  
+</script>
+{% endblock %}

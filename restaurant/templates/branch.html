@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% block title %}
+  branch
+{% endblock %}
+
+{% block styles %}
+<link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/checkout/">
+<link href="{{ url_for('static', filename='styles/blue.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+{% endblock %}
+
+{% block current %}
+  Restaurant
+{% endblock %}
+
+{% block content %} 
+  {% if branch  != [] %}
+  {% for row in branch %}
+<div class="bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 order-md-2 mb-4">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Social Media</span>
+            <span class="badge badge-secondary badge-pill">0</span>
+        </h4>
+        <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <a href="#" class="my-0 twitter"><span class="fa fa-twitter"></span><i class="bx bxl-twitter">twitter</i></a>
+              </div>
+              <span class="text-muted">0</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <a href="#" class="my-0"><span class="fa fa-facebook"></span><i class="bi bi-facebook">facebook</i></a>
+              </div>
+              <span class="text-muted">0</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <a href="#" class="instagram"><span class="fa fa-instagram"></span><i class="bx bxl-instagram">instagram</i></a>
+              </div>
+              <span class="text-muted">0</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="text-success">
+                <a href="#" class="google-plus"><span class="fa fa-skype"></span><i class="bx bxl-skype">skype</i></a>
+              </div>
+              <span class="text-success">0</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <div class="text-success">
+                <a href="#" class="linkedin"><span class="fa fa-linkedin"></span><i class="bx bxl-linkedin">linkedin</i></a>
+              </div>
+                  <span class="text-success">0</span>
+            </li>
+        </ul>
+      </div>
+      <div class="col-md-8 order-md-1">
+      <h4 class="mb-3">Restaurant Profile</h4>
+        <div class="mb-3">
+          <h5>Restaurant Name:</h5>
+          <h6>{{ row.restaurant_name }}</h6>
+        </div>
+        <div class="mb-3">
+          <h5>Email:</h5>
+          <h6>{{ row.branch_email }}</h6>
+        </div>
+        <div class="mb-3">
+          <h5>Location:</h5>
+          <h6>{{ row.location }}</h6>
+        </div>
+        <div class="mb-3">
+          <h5>Telephone:</h5>
+          <h6>{{ row.contact1 }}</h6>
+        </div>
+        <div class="mb-3">
+          <h5>Mobile Number:</h5>
+          <h6>{{ row.contact2 }}</h6>
+        </div>
+        <div class="mb-3">
+          <h5>Ratings:</h5>
+          <h4>☆☆☆☆☆</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="/branch/update/{{row.id}}" type="button" class="btn btn-info float-center"
+   data-toggle="modal" data-target="#mymodal{{row.id}}">Update Info</a>
+
+   <!-- modal-->
+   <div class="modal fade" id="mymodal{{row.id}}" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel">update {{ row.restaurant_name }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" id="form1" action="{{ url_for('update_branch') }}">
+            {{ form.hidden_tag() }}
+            <input type="hidden" name="id" value="{{row.id}}">
+            <div class="form-group">
+              <label for="restaurant">Restaurant Name:</label>
+              <input id="restaurant" type="text" name="restaurant" class="form-control" value="{{row.restaurant_name}}">
+            <div class="form-group">
+              <label for="contact1">Telephone:</label>
+              <input id="contact1" type="text" name="contact1" class="form-control" value="{{row.contact1}}">
+            </div>
+            <div class="form-group">
+              {{ form.contact2.label() }}
+              <input id="contact2" type="text" name="contact2" class="form-control" value="{{row.contact2}}">
+            </div>
+            <div class="form-group">
+              {{ form.branch_email.label() }}
+              <input id="bch-email" type="text" name="bch-email" class="form-control" value="{{row.branch_email}}">
+            </div>
+            <div class="form-group">
+              {{ form.location.label() }}
+              <input id="location" type="text" name="location" class="form-control" value="{{row.location}}">
+            </div>
+            <div class="btn-group">
+            <button type="submit" class="btn btn-primary" id="submit" onclick="form_submit()">update</button>
+          </form>
+          <button type="button"  class="btn btn-secondary float-right" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+
+{% else %}
+<div>
+<h2>Please Add Restaurant Details to Continue...</h2>
+<form method="POST" id="form1" action="{{ url_for('add_branch') }}" class="form-horizontal">
+  {{ form.hidden_tag() }}
+  <div class="form-group">
+    <label class = "col-sm-2 control-label">Restaurant Name:</label>
+    <div class = "col-sm-10">
+    {{ form.restaurant_name(class="form-control", id='restaurant_name') }}
+    </div>
+  <div class="form-group">
+    <label class = "col-sm-2 control-label">Telephone Number:</label>
+    <div class = "col-sm-10">
+    {{ form.contact1(class="form-control", id="contact1") }}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class = "col-sm-2 control-label">Mobile Number:</label>
+    <div class = "col-sm-10">
+    {{ form.contact2(class="form-control", id="contact2") }}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class = "col-sm-2 control-label">Restaurant Email:</label>
+    <div class = "col-sm-10">
+    {{ form.branch_email(class="form-control", id="branch_email") }}
+    </div>
+  </div>
+  <div class="form-group">
+    {{ form.location.label(class = "col-sm-2 control-label") }}
+    <div class = "col-sm-10">
+    {{ form.location(class="form-control", id="location") }}
+    </div>
+  </div>
+  <div class = "col-sm-offset-2 col-sm-10">
+    {{ form.submit(class="btn btn-info", id="submit") }}
+  </div>
+</form>
+</div>
+{% endif %}
+
+<footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; 2022</p>
+</footer>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='scripts/modal.js') }}"></script>
+{% endblock %}
+
+
+
+
+
+          

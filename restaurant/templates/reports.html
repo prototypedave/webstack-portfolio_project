@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title%}
+  Reports
+{% endblock %}
+
+{% block reports %} 
+<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+  <span>Saved reports</span>
+  <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+    <span data-feather="plus-circle"></span>
+  </a>
+</h6>
+<ul class="nav flex-column mb-2">
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <span data-feather="file-text"></span>
+      Current month
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <span data-feather="file-text"></span>
+      Last quarter
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <span data-feather="file-text"></span>
+      Last half
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <span data-feather="file-text"></span>
+      Year-end sale
+    </a>
+  </li>
+</ul>
+
+{% endblock %}
+
+{% block current %}
+  Reports
+{% endblock %}
+
+{% block reports_page%}
+<div class="btn-toolbar mb-2 mb-md-0">
+  <div class="btn-group mr-2">
+    <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+  </div>
+  <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+    <span data-feather="calendar"></span>
+    This week
+  </button>
+</div>
+
+{% endblock %}
+
+{% block content %}
+<!-- put chart here -->
+{% if id == report.id %}
+<a href="{{url_for('daily') }}">Check todays graph</a>
+
+{% else %}
+<h3>Please Update Your Sales Report</h3>
+<form action="{{url_for('add_report') }}" class="form-signin" method="POST">
+  {{ form.hidden_tag() }}
+  {{form.reportDate.label()}}
+  {{form.reportDate(class="form-control")}}
+  {{form.startCash.label()}}
+  {{form.startCash(class="form-control")}}
+  {{form.sales.label()}}
+  {{form.sales(class="form-control")}}
+  {{form.expenses.label()}}
+  {{form.expenses(class="form-control")}}
+  {{form.closeCash.label()}}
+  {{form.closeCash(class="form-control")}}
+  {{form.submit(class="form-control")}}
+</form>
+{% endif %}
+
+
+{% endblock %}
